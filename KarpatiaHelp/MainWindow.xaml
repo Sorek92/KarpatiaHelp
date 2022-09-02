@@ -5,8 +5,267 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KarpatiaHelp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="Karpatia" 
+        Height="600" 
+        Width="800"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Background="Transparent"
+        AllowsTransparency="True"
+        >
+    <!-- border  -->
+    <Border CornerRadius="12">
+        <Border CornerRadius="10"
+            BorderThickness="1">
+            <Border.BorderBrush>
+                <LinearGradientBrush StartPoint="1,1" EndPoint="0,0">
+                    <GradientStop Color="#86B049" Offset="0"/>
+                    <GradientStop Color="#C8B88A" Offset="0.5"/>
+                    <GradientStop Color="#F1DDDF" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.BorderBrush>
+            <Border.Background>
+                <LinearGradientBrush StartPoint="1,1" EndPoint="0,0">
+                    <GradientStop Color="#476930" Offset="0"/>
+                    <GradientStop Color="#C8B88A" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <!-- all grid -->
+            <Grid>
+                <!-- all 3 rows -->
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <!-- row 1 -->
+                <Grid Grid.Row="0" x:Name="titleBar">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="25"/>
+                        <ColumnDefinition Width="25"/>
+                        <ColumnDefinition Width="5"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock x:Name="title"
+                               Text="Karpatia"
+                               Foreground="Azure"
+                               FontSize="20"
+                               FontFamily="Fonts/anglo-katakana.ttf"
+                               Grid.Column="1"
+                               Grid.ColumnSpan="5"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center" MouseDown="title_MouseDown"
+                               />
+                    <Button x:Name="btnMinimalize" 
+                        Click="btnMinimalize_Click" 
+                        Grid.Column="2">
+                        <Image  Source="Assets/minimalize.png" 
+                            Width="10"/>
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Background" Value="White"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="LightGreen"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Width="20" Height="20"
+                                        CornerRadius="10"
+                                        Background="{TemplateBinding Background}">
+                                    <ContentPresenter VerticalAlignment="Center"
+                                                      HorizontalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+
+                    </Button>
+                    <Button x:Name="btnClose" 
+                            Click="btnClose_Click" 
+                            Grid.Column="3">
+                        <Image  Source="Assets/close.png" 
+                                Width="10"/>
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Background" Value="Red"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="LightGreen"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Width="20" Height="20"
+                                        CornerRadius="10"
+                                        Background="{TemplateBinding Background}">
+                                    <ContentPresenter VerticalAlignment="Center"
+                                                      HorizontalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
+                </Grid>
+                <!-- row 2 -->
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="5"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid x:Name="FileTitle"
+                          Grid.Row="1"
+                          Grid.Column="1">
+                        <StackPanel VerticalAlignment="Top">
+                            <Label x:Name="labelLoadFileText" 
+                                   Foreground="#CAF0F8"
+                                   Content="Wczytaj plik tekstowy z Hermesa" 
+                                   HorizontalAlignment="Left"
+                                   >
+                            </Label>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox x:Name="textBoxForLoadFile" 
+                                         Width="200">
+                                </TextBox>
+                                <Button x:Name="btnFindFile" 
+                                        VerticalAlignment="Top" 
+                                        Click="BtnFindFile_Click"
+                                        Margin="10,0,0,0">
+                                    <Button.Template>
+                                        <ControlTemplate>
+                                            <Border  CornerRadius="10" Background="#C8B88A" >
+                                                <Image Source="\Assets\folder.png" Width="20"/>
+
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </StackPanel>
+                            <Button x:Name="btnLoadFile"                     
+                                Content="Wczytaj"    
+                                HorizontalAlignment="Left"
+                                Padding="5"
+                                Click="BtnLoadFile_Click"/>
+
+                        </StackPanel>
+                    </Grid>
+                    <Grid x:Name="sort"
+                          Grid.Row="1"
+                          Grid.Column="2">
+                        <StackPanel>
+                            <Label x:Name="labelShowItemsToCheck" 
+                                       Content="Elementy do porcjowania : "                       
+                                       HorizontalAlignment="Left"                                              
+                                       Foreground="#FFDED84A"/>
+                            <CheckBox x:Name="checkBoxMeat"                           
+                                          Content="mięso"                           
+                                          HorizontalAlignment="Left"                                                                     
+                                          IsChecked="True"/>
+                            <CheckBox x:Name="checkBoxSausage"                           
+                                          Content="wędliny"                           
+                                          HorizontalAlignment="Left"                                                     
+                                          IsChecked="True"/>
+                            <CheckBox x:Name="checkBoxChicken"                           
+                                          Content="trybowanie"                           
+                                          HorizontalAlignment="Left"                                                     
+                                          IsChecked="False"/>
+                            <Button x:Name="btnSortOrders"                     
+                                Content="Pokaż wybrane"
+                                HorizontalAlignment="Left"
+                                Padding="5"
+                                Click="BtnSortOrders_Click"/>
+                        </StackPanel>
+                    </Grid>
+                    <Grid x:Name="rest"
+                          Grid.Row="1"
+                          Grid.Column="3">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Button x:Name="btnPdf"
+                                HorizontalAlignment="Left"
+                                Padding="5"
+                                Content="pdf" Click="btnPdf_Click" />
+
+                            <Button x:Name="btnClear"
+                                HorizontalAlignment="Left"
+                                Padding="5"
+                                Content="save" Click="btnClear_Click"/>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+                <!-- row 3 -->
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Wybierz artykuly do krojenia : " 
+                           Height="30" 
+                           VerticalAlignment="Top"
+                           HorizontalAlignment="Center"
+                           Grid.Row="2"
+                           Grid.Column="0"/>
+
+                    <ScrollViewer x:Name="scrollViewOrders"
+                                  
+                                  HorizontalScrollBarVisibility="Auto"
+                                  VerticalScrollBarVisibility="Auto">
+                        <StackPanel Name="panelOrder"
+                                    Orientation="Vertical"
+                                    Background="LightCyan"                  
+                                    Grid.Column ="0"                
+                                    Height="300"                
+                                    ScrollViewer.CanContentScroll="True"               
+                                     >
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <Button x:Name="moveItemsToPrint"
+                            Click="BtnMoveItemsToPrint_Click"
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Content=">"
+                            Width="40"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center">
+
+                    </Button>
+
+                    <Label Content="Wybrane elementy : " 
+                           Height="30" 
+                           VerticalAlignment="Top"
+                           HorizontalAlignment="Center"
+                           Grid.Row="2"
+                           Grid.Column="2"/>
+                    <ScrollViewer x:Name="scrollViewPrint"
+                                  CanContentScroll="True"
+                                  HorizontalScrollBarVisibility="Auto"
+                                  VerticalScrollBarVisibility="Auto"
+                                  Grid.Row="2"
+                                  Grid.Column="2">
+                        <TextBlock x:Name="listBoxPrint"
+                             
+                             Margin="0,30,5,20">
+
+                        </TextBlock>
+                    </ScrollViewer>
+
+                </Grid>
+
+            </Grid>
+
+        </Border>
+    </Border>
 </Window>
