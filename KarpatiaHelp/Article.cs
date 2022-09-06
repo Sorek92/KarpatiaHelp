@@ -18,6 +18,7 @@ namespace KarpatiaHelp
         public double price; // cena
         public bool isMeatCut;
         public bool isSausageCut;
+        public bool isChickenCut;
 
         public Article()
         {
@@ -37,6 +38,7 @@ namespace KarpatiaHelp
 
             this.isMeatCut = IsMeatCutting();
             this.isSausageCut = IsSausageCutting();
+            this.isChickenCut = IsChickenCutting();
         }
 
         public void show()
@@ -73,27 +75,38 @@ namespace KarpatiaHelp
             switch (this.name)
             {
                 case string n when n.Contains("stekowana"):
-                    Console.WriteLine("zaznaczono stekowana: {0}", this.name);
+                    //Console.WriteLine("zaznaczono stekowana: {0}", this.name);
                     answer = true;
                     break;
                 case string n when n.Contains("stek"):
-                    Console.WriteLine("zaznaczono stek: {0}", this.name);
+                    //Console.WriteLine("zaznaczono stek: {0}", this.name);
                     answer = true;
                     break;
                 case string n when n.Contains("kostka"):
                     if (!n.Contains("smalec"))
                     {
-                        Console.WriteLine("zaznaczono kostka: {0}", this.name);
+                        //Console.WriteLine("zaznaczono kostka: {0}", this.name);
                         answer = true;
                     }
                     else
                     {
-                        Console.WriteLine("zaznaczono kostkę ale smalec: {0}", this.name);
+                        //Console.WriteLine("zaznaczono kostkę ale smalec: {0}", this.name);
                         answer = false;
                     }
 
                     break;
-
+                case string n when n.Contains("ze skrzydełkiem"):
+                    //Console.WriteLine("zaznaczono stek: {0}", this.name);
+                    answer = true;
+                    break;
+                case string n when n.Contains("bez lotki"):
+                    //Console.WriteLine("zaznaczono stek: {0}", this.name);
+                    answer = true;
+                    break;
+                case string n when n.Contains("ze skórą"):
+                    //Console.WriteLine("zaznaczono stek: {0}", this.name);
+                    answer = true;
+                    break;
             }
 
 
@@ -107,14 +120,14 @@ namespace KarpatiaHelp
             switch (this.name)
             {
                 case string n when n.Contains("plastry"):
-                    if (!n.Contains("gotowany"))
+                    if (!n.Contains("gotowany") && !n.Contains("długa") && !n.Contains("goleń"))
                     {
-                        Console.WriteLine("zaznaczono wędline: {0}", this.name);
+                        //Console.WriteLine("zaznaczono wędline: {0}", this.name);
                         answer = true;
                     }
                     else
                     {
-                        Console.WriteLine("zaznaczono wędline ale boczek: {0}", this.name);
+                        //Console.WriteLine("zaznaczono wędline ale boczek: {0}", this.name);
                         answer = false;
                     }
 
@@ -130,5 +143,35 @@ namespace KarpatiaHelp
             return answer;
         }
 
+        public bool IsChickenCutting()
+        {
+            bool answer = false;
+
+            switch (this.name)
+            {
+                case string n when n.Contains("b/k/b/s"):
+                    answer = true;
+
+                    break;
+                case string n when n.Contains("z/k z/s"):
+                    
+                    answer = true;
+
+                    break;
+                case string n when n.Contains("z/s b/k"):
+
+                    answer = true;
+
+                    break;
+                case string n when n.Contains("kebab"):
+
+                    answer = true;
+
+                    break;
+            }
+
+
+            return answer;
+        }
     }
 }

@@ -41,14 +41,20 @@ namespace KarpatiaHelp
         {
             InitializeComponent();
             readFile = new File("dane.txt");
-            writeFile = new File("posortowane.txt");
+            writeFile = new File("krojenie.txt");
             ordersList = new List<Order>();
             articlesList = new List<Article>();
             numberColumnList = new List<int>();
             namesColumnList = new List<string>();
 
             // 
-            this.textBoxForLoadFile.Text = readFile.FileName;
+            //this.textBoxForLoadFile.Content = readFile.FileName;
+
+
+            btnLoadFile.IsEnabled = false;
+            moveItemsToPrint.IsEnabled = false;
+            moveItemsToPrint.Visibility = Visibility.Hidden;
+            btnSortOrders.IsEnabled = false;
         }
 
         /*
@@ -104,23 +110,25 @@ namespace KarpatiaHelp
          */
         private void BtnFindFile_Click(object sender, RoutedEventArgs e)
         {
-            textBoxForLoadFile.Text = readFile.LoadFile();
+            textBoxForLoadFile.Content = readFile.LoadFile();
+            btnLoadFile.IsEnabled = true;
+            btnLoadFile.Content = "Wczytaj";
         }
 
         private void BtnLoadFile_Click(object sender, RoutedEventArgs ev)
         {
             // zmiana pliku do wczytania
-            readFile.ChangePath(textBoxForLoadFile.Text);
+            readFile.ChangePath(textBoxForLoadFile.Content.ToString());
 
             Encoding encoding = Encoding.Default;
-
+            
             // wczytanie pliku
             try
             {
 
                 using (StreamReader sr = new StreamReader(readFile.Path, encoding))
                 {
-
+                    
                     string line;
                     int option = 1;
                     string option2 = "";
@@ -303,7 +311,14 @@ namespace KarpatiaHelp
                     }
 
                     articlesList.Clear();
+
+                    btnLoadFile.Content = "Wczytano plik";
+                    btnLoadFile.IsEnabled = false;
+                    btnSortOrders.IsEnabled = true;
+
+
                 }
+
             }
             catch (Exception e)
             {
@@ -321,147 +336,61 @@ namespace KarpatiaHelp
         {
 
             panelOrder.Children.Clear();
+            listBoxPrint.Text = "";
 
             for (int i = 0; i < ordersList.Count; i++)
             {
                 ListBox l = new ListBox();
                 l.SelectionMode = SelectionMode.Multiple;
-                l.Width = 200;
-                l.Items.Add(ordersList[i].customer + " " + ordersList[i].orderNumber);
-                l.Margin = new Thickness(0, 20, 0, 20);
-
+                
+                l.Items.Add("\t" + ordersList[i].customer + " " + ordersList[i].orderNumber);
+                l.Margin = new Thickness(20, 5, 20, 5);
+                string text = "";
                 foreach (var article in ordersList[i].articles)
                 {
                     if (article.wg_jm2 == "TAK" || article.wg_jm2 == "tak")
                     {
 
-                        l.Items.Add(article.name + "  " + article.unitNumber2 + " " + article.unit2);
+                        text = article.name + "  " + article.unitNumber2 + " " + article.unit2;
 
                     }
                     else
                     {
-                        l.Items.Add(article.name + "  " + article.unitNumber1 + " " + article.unit1);
+                        text = article.name + "  " + article.unitNumber1 + " " + article.unit1;
                     }
+
+                    l.Items.Add(text);
+
+                    if ((bool)checkBoxMeat.IsChecked && article.isMeatCut)
+                    {
+                        l.SelectedItems.Add(text);
+                    }
+
+                    if ((bool)checkBoxSausage.IsChecked && article.isSausageCut)
+                    {
+                        l.SelectedItems.Add(text);
+                    }
+
+                    if ((bool)checkBoxChicken.IsChecked && article.isChickenCut)
+                    {
+                        l.SelectedItems.Add(text);
+                    }
+                    text = "";
+
                 }
+                l.Items.Add("Uwagi: " + ordersList[i].remarks);
 
                 panelOrder.Children.Add(l);
 
             }
 
-            /*for (int i = 0; i < ordersList.Count; i++)
-            {
-                ListBox l = new ListBox();
-                l.SelectionMode = SelectionMode.Multiple;
-                l.Width = 200;
-                l.Items.Add(ordersList[i].customer + " " + ordersList[i].orderNumber);
-                l.Margin = new Thickness(0,20,0,20);
-                foreach(var article in ordersList[i].articles)
-                {
-                    l.Items.Add(article.name + " " + article.price);
-                }
-
-                panelOrder.Children.Add(l);
-
-            }*/
+            if(panelOrder.Children.Count > 0)
+            moveItemsToPrint.IsEnabled = true;
+            moveItemsToPrint.Visibility = Visibility.Visible;
 
 
-
-
-            /*            listBoxAllOrders.Items.Clear();
-
-                        List<int> selectList = new List<int>();
-
-                        foreach (var order in ordersList)
-                        {
-
-                            int itemListNumber = listBoxAllOrders.Items.Add(order.customer.ToUpper() + "\t" + order.orderNumber);
-
-
-                            // zapis nazwy zamówienia
-                            selectList.Add(itemListNumber);
-
-                            foreach (var article in order.articles)
-                            {
-
-                                if (article.wg_jm2 == "TAK" || article.wg_jm2 == "tak")
-                                {
-
-                                    var ii = listBoxAllOrders.Items.Add(article.name + "  " + article.unitNumber2 + " " + article.unit2);
-
-                                    if ((bool)checkBoxMeat.IsChecked && article.isMeatCut)
-                                    {
-                                        Console.WriteLine("zaznaczono mięso {0} {1}", listBoxAllOrders.Items.Count - 1, ii);
-
-                                        selectList.Add(ii);
-
-                                    }
-
-                                    if ((bool)checkBoxSausage.IsChecked && article.isSausageCut)
-                                    {
-                                        Console.WriteLine("zaznaczono wędline {0} {1}", listBoxAllOrders.Items.Count - 1, ii);
-
-                                        selectList.Add(ii);
-                                    }
-                                }
-                                else
-                                {
-
-                                    var ii = listBoxAllOrders.Items.Add(article.name + "  " + article.unitNumber1 + " " + article.unit1);
-                                    if ((bool)checkBoxMeat.IsChecked && article.isMeatCut)
-                                    {
-                                        Console.WriteLine("zaznaczono {0}", listBoxAllOrders.Items.Count - 1);
-                                        selectList.Add(ii);
-                                    }
-
-                                    if ((bool)checkBoxSausage.IsChecked && article.isSausageCut)
-                                    {
-                                        Console.WriteLine("zaznaczono wędline {0} {1}", listBoxAllOrders.Items.Count - 1, ii);
-
-                                        selectList.Add(ii);
-                                    }
-                                }
-
-                            }
-
-                            Console.Write("selected list before: ");
-                            for (int j=0; j< selectList.Count; j++)
-                            {
-                                Console.Write(selectList[j] + " ; " );
-                            }
-                            Console.WriteLine();
-                            selectList.Sort();
-
-                            Console.Write("selected list po: ");
-                            for (int j = 0; j < selectList.Count; j++)
-                            {
-                                Console.Write(listBoxAllOrders.Items[j] + " ; ");
-                            }
-
-                            Console.WriteLine();
-                            if (selectList.Count > 1)
-                            {
-                                for(int i = 0; i < selectList.Count; i++)
-                                {
-                                    listBoxAllOrders.SelectedItems.Add(listBoxAllOrders.Items[selectList[i]]);
-                                    Console.WriteLine(selectList[i]);
-                                }
-                                selectList.Clear();
-                            }
-                            else
-                            {
-                                selectList.Clear();
-                            }
-
-
-
-
-                        }
-
-                        foreach (var o in listBoxAllOrders.Items)
-                        {
-                            Console.WriteLine();
-                        }*/
-
+            string folder = Directory.GetCurrentDirectory() + "\\";
+            listBoxPrint.Text += "\n" + folder;
 
         }
 
@@ -474,7 +403,15 @@ namespace KarpatiaHelp
             {
                 if (lb.SelectedItems.Count > 0)
                 {
-                    lb.SelectedItems.Add(lb.Items[0]);
+                    if (lb.SelectedItems.Count == 1 && lb.SelectedItems.Contains(lb.Items[0]))
+                    {
+                        lb.SelectedItems.Remove(lb.Items[0]);
+                    }
+                    else
+                    {
+                        lb.SelectedItems.Add(lb.Items[0]);
+                    }
+                    
                 }
                 foreach (var item in lb.Items)
                 {
@@ -485,6 +422,7 @@ namespace KarpatiaHelp
                 }
 
                 //listBoxPrint.Items.Add("");
+                if(lb.SelectedItems.Count > 0)
                 listBoxPrint.Text += "\n";
 
 
@@ -635,7 +573,8 @@ namespace KarpatiaHelp
             StreamWriter sw = new StreamWriter("wynik.txt");
 
             sw.Write(listBoxPrint.Text);
-
+            string folder = Directory.GetCurrentDirectory() + "\\";
+            MessageBox.Show("Zapisano w pliku: " + folder + "wynik.txt");
             sw.Close();
 
         }
@@ -651,9 +590,9 @@ namespace KarpatiaHelp
                 XGraphics gfx = XGraphics.FromPdfPage(page);
 
                 //Set the standard font
-                XFont font = new XFont("Verdana", 20, XFontStyle.Bold);
+                XFont font = new XFont("Verdana", 12, XFontStyle.Regular);
 
-                XRect rec = new XRect(0, 0, page.Width, page.Height);
+                XRect rec = new XRect(20, 20, page.Width, page.Height);
 
                 string word = "";
 
@@ -661,12 +600,19 @@ namespace KarpatiaHelp
                 {
                     if (listBoxPrint.Text[i] != '\n')
                     {
+                        if (listBoxPrint.Text[i] != '\t')
                         word += listBoxPrint.Text[i];
                     }
                     else
-                    {
+                    {   
+                        if(rec.Y > page.Height - 20)
+                        {
+                            page = document.AddPage();
+                            gfx = XGraphics.FromPdfPage(page);
+                            rec = new XRect(20, 20, page.Width, page.Height);
+                        }
                         gfx.DrawString(word, font, XBrushes.Black, rec, XStringFormats.TopLeft);
-                        rec.Y += 25;
+                        rec.Y += 20;
                         word = "";
                     }
 
@@ -678,8 +624,22 @@ namespace KarpatiaHelp
 
 
                 //Save the document
-                string filename = "HelloWorld.pdf";
-                document.Save(filename);
+                string folder = Directory.GetCurrentDirectory() + "\\";
+                string filename = folder + "DoKrojenia.pdf";
+                try
+                {
+
+                    //document.Close();
+                    MessageBox.Show("Zapisano w pliku: " + filename);
+                    document.Save(filename);
+
+                    
+                }
+                catch (Exception ev)
+                {
+                    MessageBox.Show(ev.Message);
+                }
+                
             }
         }
     }

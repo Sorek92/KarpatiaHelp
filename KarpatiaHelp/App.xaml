@@ -4,6 +4,31 @@
              xmlns:local="clr-namespace:KarpatiaHelp"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <LinearGradientBrush x:Key="GrayBlueGardientBrush"  
+                            StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="DarkCyan" Offset="0"/>
+            <GradientStop Color="#CCCCFF" Offset="0.5"/>
+            <GradientStop Color="DarkCyan" Offset="1"/>
+
+        </LinearGradientBrush>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="{StaticResource GrayBlueGardientBrush}"/>
+            <Setter Property="Padding" Value="10,2,10,2"/>
+            <Setter Property="Margin" Value="0,2,0,2"/>
+            <Style.Resources >
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="7"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+
+        <Style TargetType="ListBoxItem">
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="FontWeight" Value="Bold"/>
+                </Trigger>
+
+            </Style.Triggers>
+        </Style>
     </Application.Resources>
 </Application>

@@ -14,6 +14,7 @@
         Background="Transparent"
         AllowsTransparency="True"
         >
+
     <!-- border  -->
     <Border CornerRadius="12">
         <Border CornerRadius="10"
@@ -36,7 +37,8 @@
                 <!-- all 3 rows -->
                 <Grid.RowDefinitions>
                     <RowDefinition Height="35"/>
-                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="105"/>
+                    <RowDefinition Height="30"/>
                     <RowDefinition />
                 </Grid.RowDefinitions>
 
@@ -50,27 +52,29 @@
                         <ColumnDefinition Width="5"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock x:Name="title"
+                    <Grid Grid.Column="1"
+                          Grid.ColumnSpan="5"
+                          MouseDown="title_MouseDown">
+                        <TextBlock x:Name="title"
                                Text="Karpatia"
                                Foreground="Azure"
                                FontSize="20"
                                FontFamily="Fonts/anglo-katakana.ttf"
-                               Grid.Column="1"
-                               Grid.ColumnSpan="5"
                                VerticalAlignment="Center"
-                               HorizontalAlignment="Center" MouseDown="title_MouseDown"
+                               HorizontalAlignment="Center" 
                                />
+                    </Grid>
                     <Button x:Name="btnMinimalize" 
                         Click="btnMinimalize_Click" 
                         Grid.Column="2">
                         <Image  Source="Assets/minimalize.png" 
-                            Width="10"/>
+                            Width="15"/>
                         <Button.Style>
                             <Style TargetType="Button">
-                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="Background" Value="Cyan"/>
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="LightGreen"/>
+                                        <Setter Property="Background" Value="LightCyan"/>
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
@@ -97,7 +101,7 @@
                                 <Setter Property="Background" Value="Red"/>
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="LightGreen"/>
+                                        <Setter Property="Background" Value="HotPink"/>
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
@@ -117,117 +121,150 @@
 
                 </Grid>
                 <!-- row 2 -->
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="5"/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="5"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid x:Name="FileTitle"
+                <Border Background="Transparent" BorderBrush="Green" BorderThickness="0,1,0,0" Grid.Row="1">
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="5"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="5"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid x:Name="fileColumn"
                           Grid.Row="1"
                           Grid.Column="1">
-                        <StackPanel VerticalAlignment="Top">
-                            <Label x:Name="labelLoadFileText" 
-                                   Foreground="#CAF0F8"
+                            <StackPanel VerticalAlignment="Top">
+                                <Label x:Name="labelLoadFileText" 
+                                   Foreground="Black"
                                    Content="Wczytaj plik tekstowy z Hermesa" 
                                    HorizontalAlignment="Left"
                                    >
-                            </Label>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBox x:Name="textBoxForLoadFile" 
-                                         Width="200">
-                                </TextBox>
-                                <Button x:Name="btnFindFile" 
-                                        VerticalAlignment="Top" 
+                                </Label>
+                                <StackPanel Orientation="Vertical">
+
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="Wybierz plik z folderu: "></Label>
+                                        <Button x:Name="btnFindFile" 
+                                        VerticalAlignment="Center" 
+                                            HorizontalAlignment="Center"
                                         Click="BtnFindFile_Click"
-                                        Margin="10,0,0,0">
-                                    <Button.Template>
-                                        <ControlTemplate>
-                                            <Border  CornerRadius="10" Background="#C8B88A" >
-                                                <Image Source="\Assets\folder.png" Width="20"/>
+                                            
+                                        Margin="2,0,0,0">
+                                            <Button.Template>
+                                                <ControlTemplate>
+                                                    <Border  CornerRadius="10" Background="LightGray" >
+                                                        <Image Source="\Assets\folder.png" Width="20"/>
 
-                                            </Border>
-                                        </ControlTemplate>
-                                    </Button.Template>
-                                </Button>
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Button.Template>
+
+                                        </Button>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="Wybrano plik:"></Label>
+                                        <Label x:Name="textBoxForLoadFile" Content=""></Label>
+                                    </StackPanel>
+                                    <Button x:Name="btnLoadFile"                     
+                                            Content="Wczytaj"    
+                                            HorizontalAlignment="Center"
+                                            Click="BtnLoadFile_Click">
+
+                                    </Button>
+                                    
+                                </StackPanel>
+
+
                             </StackPanel>
-                            <Button x:Name="btnLoadFile"                     
-                                Content="Wczytaj"    
-                                HorizontalAlignment="Left"
-                                Padding="5"
-                                Click="BtnLoadFile_Click"/>
-
-                        </StackPanel>
-                    </Grid>
-                    <Grid x:Name="sort"
+                        </Grid>
+                        <Grid x:Name="sortColumn"
                           Grid.Row="1"
                           Grid.Column="2">
-                        <StackPanel>
-                            <Label x:Name="labelShowItemsToCheck" 
+                            <StackPanel>
+                                <Label x:Name="labelShowItemsToCheck" 
                                        Content="Elementy do porcjowania : "                       
                                        HorizontalAlignment="Left"                                              
-                                       Foreground="#FFDED84A"/>
-                            <CheckBox x:Name="checkBoxMeat"                           
+                                       Foreground="Black"/>
+                                <CheckBox x:Name="checkBoxMeat"                           
                                           Content="mięso"                           
                                           HorizontalAlignment="Left"                                                                     
                                           IsChecked="True"/>
-                            <CheckBox x:Name="checkBoxSausage"                           
+                                <CheckBox x:Name="checkBoxSausage"                           
                                           Content="wędliny"                           
                                           HorizontalAlignment="Left"                                                     
                                           IsChecked="True"/>
-                            <CheckBox x:Name="checkBoxChicken"                           
+                                <CheckBox x:Name="checkBoxChicken"                           
                                           Content="trybowanie"                           
                                           HorizontalAlignment="Left"                                                     
                                           IsChecked="False"/>
-                            <Button x:Name="btnSortOrders"                     
+                                <Button x:Name="btnSortOrders"                     
                                 Content="Pokaż wybrane"
                                 HorizontalAlignment="Left"
-                                Padding="5"
+                                
                                 Click="BtnSortOrders_Click"/>
-                        </StackPanel>
-                    </Grid>
-                    <Grid x:Name="rest"
+                            </StackPanel>
+                        </Grid>
+                        <Grid x:Name="saveColumn"
                           Grid.Row="1"
                           Grid.Column="3">
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <Button x:Name="btnPdf"
+                            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                <Label 
+                                       Content="Zapisz wybrane elementy : "                       
+                                       HorizontalAlignment="Left"                                              
+                                       Foreground="Black"/>
+                                <Button x:Name="btnPdf"
                                 HorizontalAlignment="Left"
-                                Padding="5"
-                                Content="pdf" Click="btnPdf_Click" />
+                                
+                                Content="Zapisz PDF" Click="btnPdf_Click" />
 
-                            <Button x:Name="btnClear"
+                                <Button x:Name="btnClear"
                                 HorizontalAlignment="Left"
-                                Padding="5"
-                                Content="save" Click="btnClear_Click"/>
-                        </StackPanel>
+                               
+                                Content="Zapisz TXT" Click="btnClear_Click"/>
+                            </StackPanel>
+                        </Grid>
                     </Grid>
-                </Grid>
+                </Border>
                 <!-- row 3 -->
-                <Grid Grid.Row="2">
+                <Border Background="Transparent" BorderBrush="Green" BorderThickness="0,1,0,1" Grid.Row="2">
+                    <Grid Grid.Row="2">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Content="Wybierz artykuly do krojenia : " 
+                           HorizontalAlignment="Center"
+                           Grid.Row="2"
+                           Grid.Column="0"/>
+
+                        <Label Content="Wybrane elementy : " 
+                           HorizontalAlignment="Center"
+                           Grid.Row="2"
+                           Grid.Column="1"/>
+
+
+                    </Grid>
+                </Border>
+                <!-- row 4 -->
+                <Grid Grid.Row="3">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition Width="50"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Label Content="Wybierz artykuly do krojenia : " 
-                           Height="30" 
-                           VerticalAlignment="Top"
-                           HorizontalAlignment="Center"
-                           Grid.Row="2"
-                           Grid.Column="0"/>
 
                     <ScrollViewer x:Name="scrollViewOrders"
                                   
-                                  HorizontalScrollBarVisibility="Auto"
-                                  VerticalScrollBarVisibility="Auto">
+                                  VerticalScrollBarVisibility="Auto"
+                                  Margin="0,5,0,5">
                         <StackPanel Name="panelOrder"
                                     Orientation="Vertical"
-                                    Background="LightCyan"                  
-                                    Grid.Column ="0"                
-                                    Height="300"                
-                                    ScrollViewer.CanContentScroll="True"               
+                                    Background="Transparent"                  
+                                    Grid.Column ="0"                 
+                                    ScrollViewer.CanContentScroll="True"
+                                    Margin="5,0,0,0"
                                      >
                         </StackPanel>
                     </ScrollViewer>
@@ -243,25 +280,23 @@
 
                     </Button>
 
-                    <Label Content="Wybrane elementy : " 
-                           Height="30" 
-                           VerticalAlignment="Top"
-                           HorizontalAlignment="Center"
-                           Grid.Row="2"
-                           Grid.Column="2"/>
                     <ScrollViewer x:Name="scrollViewPrint"
-                                  CanContentScroll="True"
+                                  
                                   HorizontalScrollBarVisibility="Auto"
                                   VerticalScrollBarVisibility="Auto"
                                   Grid.Row="2"
-                                  Grid.Column="2">
+                                  Grid.Column="2"
+                                  >
+                        
+                        
                         <TextBlock x:Name="listBoxPrint"
-                             
-                             Margin="0,30,5,20">
+                                   Margin="0,10,5,10"
+                                   >
 
                         </TextBlock>
+                        
                     </ScrollViewer>
-
+                    
                 </Grid>
 
             </Grid>
